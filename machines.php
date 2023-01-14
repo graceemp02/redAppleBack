@@ -32,6 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 $thisCustomer["FullName"] = "------";
             }
             $arr[$count]["id"] = $thisMachine["Id"];
+            $arr[$count]["cid"] = $thisMachine["customerId"];
             $arr[$count]["name"] = $thisMachine["name"];
             $arr[$count]["cName"] = $thisCustomer['FullName'];
             $arr[$count]["location"] = $thisMachine["location"];
