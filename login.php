@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['userId'] = $passcheck['Id'];
                 $arr['res'] = 'true';
                 $arr['name'] = $passcheck['FullName'];
+                $arr['id'] = $passcheck['Id'];
             } else { 
                 $arr['res'] = 'Password Incorrent';
             }

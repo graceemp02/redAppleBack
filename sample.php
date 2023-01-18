@@ -5,7 +5,7 @@
 include('mydbCon.php');
 
 $arr = [];
-
+$arr['res'] = 'Sample';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
 }
