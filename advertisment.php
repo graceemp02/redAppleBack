@@ -8,43 +8,31 @@ $arr = [];
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET["api"]) && isset($_GET["cid"])) {
-
         $cid = $_GET["cid"];
         $api = $_GET["api"];
         $query = "SELECT * FROM `advertisement_img` WHERE `machine_api` = '$api'";
         ($result = mysqli_query($dbCon, $query)) or
             die("database error:" . mysqli_error($dbCon));
         $adPic = mysqli_fetch_assoc($result);
-        $arr["path"] = $adPic['ad_pic'];
-        // return image path here
+        $arr["path"] = $adPic["ad_pic"];
+        $arr["time"] = $adPic["ad_time"];
     }
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $arr["chk"] = "line 20";
     if (isset($_FILES["fileToUpload"]) && isset($_POST["cid"])) {
         $cid = $_POST["cid"];
         $target_dir = "img/";
         $target_file =
-            $target_dir . basename($cid . $_FILES["fileToUpload"]["name"]);
+            $target_dir .
+            basename($cid . "_" . $_FILES["fileToUpload"]["name"]);
         $uploadOk = 1;
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
         // Check if image file is a actual image or fake image
-
         $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
 
         if ($check !== false) {
             $uploadOk = 1;
         } else {
             $arr["res"] = "Sorry, only JPG, JPEG & PNG files are allowed.";
-            print json_encode($arr);
-            return;
-            $uploadOk = 0;
-        }
-
-        // Check if file already exists
-        if (file_exists($target_file)) {
-            // $target_file = . $target_file
-            $arr["res"] = "Sorry, change your file name and try again.";
             print json_encode($arr);
             return;
             $uploadOk = 0;
@@ -70,47 +58,69 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             return;
             $uploadOk = 0;
         }
-        echo $uploadOk;
-        // Check if $uploadOk is set to 0 by an error
-        if ($uploadOk == 1) {
-            if (
-                move_uploaded_file(
-                    $_FILES["fileToUpload"]["tmp_name"],
-                    $target_file
-                )
-            ) {
-                echo "its uploaded";
-                if (isset($_POST["api"])) {
-                    echo "its inside api";
-                    $api = $_POST["api"];
-                    $query2 = "UPDATE `advertisement_img` SET `ad_pic`='$target_file' WHERE `machine_api`= '$api'";
-                } else {
-                    echo "its inside client";
-                    $query2 = "UPDATE `advertisement_img` SET `ad_pic`='$target_file' WHERE `client_id`= '$cid'";
+
+        if (isset($_POST["api"])) {
+            $api = $_POST["api"];
+            $sql1 = "SELECT * FROM `advertisement_img` WHERE `machine_api`='$api'";
+            ($result1 = mysqli_query($dbCon, $sql1)) or
+                die("database error:" . mysqli_error($dbCon));
+            $old = mysqli_fetch_assoc($result1);
+            $oldAdPic = $old["ad_pic"];
+            $sql2 = "SELECT * FROM `advertisement_img` WHERE `ad_pic`='$oldAdPic' AND `client_id` = $cid";
+            ($result2 = mysqli_query($dbCon, $sql2)) or
+                die("database error:" . mysqli_error($dbCon));
+            if (mysqli_num_rows($result2) == 1) {
+                $adPic = mysqli_fetch_assoc($result2);
+                $oldPic = $adPic["ad_pic"];
+                if (file_exists($oldPic)) {
+                    unlink($oldPic);
                 }
-                ($result = mysqli_query($dbCon, $query2)) or
-                    die("database error:" . mysqli_error($dbCon));
-                if ($result) {
-                    $arr["res"] = "true";
-                } else {
-                    $arr["res"] = "false";
-                }
-            } else {
-                $arr["res"] =
-                    "Sorry, there was an error uploading your file. Please try again";
             }
+
+            $query2 = "UPDATE `advertisement_img` SET `ad_pic`='$target_file' WHERE `machine_api`= '$api'";
         } else {
+            $sql3 = "SELECT * FROM `advertisement_img` WHERE `client_id`='$cid'";
+            ($result3 = mysqli_query($dbCon, $sql3)) or
+                die("database error:" . mysqli_error($dbCon));
+
+            while ($row = mysqli_fetch_assoc($result3)) {
+                $oldAdPic = $row["ad_pic"];
+                if (file_exists($oldAdPic)) {
+                    unlink($oldAdPic);
+                }
+            }
+            $query2 = "UPDATE `advertisement_img` SET `ad_pic`='$target_file' WHERE `client_id`= '$cid'";
+        }
+        ($result = mysqli_query($dbCon, $query2)) or
+            die("database error:" . mysqli_error($dbCon));
+        if (
+            $result &&
+            move_uploaded_file(
+                $_FILES["fileToUpload"]["tmp_name"],
+                $target_file
+            )
+        ) {
+            $arr["res"] = "true";
+        } else {
+            $arr["res"] =
+                "Sorry, there was an error uploading your file. Please try again";
         }
     } elseif (isset($_POST["time"])) {
-        // code before sql query
+        $time = $_POST["time"];
         if (isset($_POST["cid"])) {
             $cid = $_POST["cid"];
-            // sql for all machine of cid customer
+            $sql = "UPDATE `advertisement_img` SET `ad_time`='$time' WHERE `client_id` = '$cid'";
         } elseif (isset($_POST["api"])) {
             $api = $_POST["api"];
-            // sql for specific machine
+            $sql = "UPDATE `advertisement_img` SET `ad_time`='$time' WHERE `machine_api` = '$api'";
         }
-        //code after sql query
+        ($result2 = mysqli_query($dbCon, $sql)) or
+            die("database error:" . mysqli_error($dbCon));
+        if($result2){
+            $arr["res"] = 'true';
+        } else {
+            $arr["res"] = 'Sorry, Time is not Updated. Please try again.';
+        }
     }
 }
 
