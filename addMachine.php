@@ -59,7 +59,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $query7 = "INSERT INTO `advertisement_img` (`client_id`, `client_name`, `machine_id`, `machine_name`, `machine_api`) VALUES ( '$machineCustomer', '$machineCustomerName', '$machineId', '$machineName', '$machineToken')";
     ($result7 = mysqli_query($dbCon, $query7)) or
         die("database error:" . mysqli_error($dbCon));
-        if($result7){
+
+    $query8 = "INSERT INTO `ranges` (`machineId`, `machineName`, `machineToken`) 
+                                    VALUES ('$machineId', '$machineName', '$machineToken')";
+                                    $result8 = mysqli_query($dbCon, $query8) or die("database error:" . mysqli_error($dbCon));
+        if($result8){
             $arr['res'] = 'true';
         }
 }

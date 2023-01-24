@@ -116,10 +116,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         }
         ($result2 = mysqli_query($dbCon, $sql)) or
             die("database error:" . mysqli_error($dbCon));
-        if($result2){
-            $arr["res"] = 'true';
+        if ($result2) {
+            $arr["res"] = "true";
         } else {
-            $arr["res"] = 'Sorry, Time is not Updated. Please try again.';
+            $arr["res"] = "Sorry, Time is not Updated. Please try again.";
         }
     }
 }
