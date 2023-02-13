@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $query2 = "SELECT * FROM `customers` WHERE `FullName` = '$newFullName'";
         ($result2 = mysqli_query($dbCon, $query2)) or
             die("database error:" . mysqli_error($dbCon));
-        $details = mysqli_fetch_assoc($result2);
+        $details = mysqli_fetch_assoc($result2); 
         $customerId = $details["Id"];
 
         // Adding new client details in company, inspector, and gaes data

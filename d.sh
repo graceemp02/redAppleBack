@@ -16,7 +16,7 @@ git push
 
 
 echo "Deploying Files to Server........................................"
-scp -r * root@198.199.82.208:/var/www/iamredapple.com/php
+scp -r * root@137.184.179.113:/var/www/iamredapple.com/php
 
 
 echo "Done!! ........................................"

@@ -25,10 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $target_dir .
             basename($cid . "_" . $_FILES["fileToUpload"]["name"]);
         $uploadOk = 1;
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
         // Check if image file is a actual image or fake image
         $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-
+        
         if ($check !== false) {
             $uploadOk = 1;
         } else {
@@ -37,16 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             return;
             $uploadOk = 0;
         }
-
-        // Check file size
-        if ($_FILES["fileToUpload"]["size"] > 2000000) {
-            $arr["res"] =
-                "Sorry, your file is too large. <a href='https://smallseotools.com/image-compressor/' target='_blank'>Click here to reduce size</a>";
-            print json_encode($arr);
-            return;
-            $uploadOk = 0;
-        }
-
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
         // Allow certain file formats
         if (
             $imageFileType != "jpg" &&
@@ -58,6 +48,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             return;
             $uploadOk = 0;
         }
+        // Check file size
+        if ($_FILES["fileToUpload"]["size"] > 2000000) {
+            $arr["res"] =
+                "Sorry, your file is too large. <a href='https://smallseotools.com/image-compressor/' target='_blank'>Click here to reduce size</a>";
+            print json_encode($arr);
+            return;
+            $uploadOk = 0;
+        }
+
+      
 
         if (isset($_POST["api"])) {
             $api = $_POST["api"];

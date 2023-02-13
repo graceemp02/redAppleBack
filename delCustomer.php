@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $query = "DELETE FROM `machines` WHERE `machines`.`customerId` = $toDel";
     ($result = mysqli_query($dbCon, $query)) or
         die("database error:" . mysqli_error($dbCon));
-    $query = "DELETE FROM `customers` WHERE `customers`.`Id` = $toDel";
+    $query = "DELETE FROM `customers` WHERE `customers`.`Id` = $toDel"; 
     ($result = mysqli_query($dbCon, $query)) or
         die("database error:" . mysqli_error($dbCon));
     if($result) $arr['res'] = 'true';
