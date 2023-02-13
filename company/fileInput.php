@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             //Check & Remove already uploaded file
-            $query = "SELECT $name FROM `companydata` WHERE `client_id`= '$id'";
+            $query = "SELECT $name FROM `companyData` WHERE `client_id`= '$id'";
             ($result = mysqli_query($dbCon, $query)) or
                 die("database error:" . mysqli_error($dbCon));
             $oldData = mysqli_fetch_assoc($result);
@@ -87,14 +87,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_GET["name"])) {
             $id = $_GET["id"];
             $name = $_GET["name"];
-            $query = "SELECT $name FROM `companydata` WHERE `client_id` = '$id'";
+            $query = "SELECT $name FROM `companyData` WHERE `client_id` = '$id'";
             ($result = mysqli_query($dbCon, $query)) or
                 die("database error:" . mysqli_error($dbCon));
             $data = mysqli_fetch_assoc($result);
             $arr["res"] = $data[$name];
         } elseif (isset($_GET["status"])) {
             $status = $_GET["status"];
-            $query = "SELECT `$status` FROM `companydata` WHERE `client_id` = $id";
+            $query = "SELECT `$status` FROM `companyData` WHERE `client_id` = $id";
             ($result = mysqli_query($dbCon, $query)) or
                 die("database error:" . mysqli_error($dbCon));
             $data = mysqli_fetch_assoc($result);

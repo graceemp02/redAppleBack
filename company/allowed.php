@@ -9,12 +9,10 @@ $arr = [];
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET["id"])) {
         $id = $_GET["id"];
-
-        $query = "SELECT * FROM `companydata` WHERE `client_id` = '$id'";
+        $query = "SELECT * FROM `companyData` WHERE `client_id` = '$id'";
         ($result = mysqli_query($dbCon, $query)) or
             die("database error:" . mysqli_error($dbCon));
         $data = mysqli_fetch_assoc($result);
-
         foreach ($data as $key => $value) {
             if ($key == "outAirAssessmentName") {
                 $arr["res"] = "true";

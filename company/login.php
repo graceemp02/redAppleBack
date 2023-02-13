@@ -7,7 +7,7 @@ include "../mydbCon.php";
 $arr = [];
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["username"])) {
-        $usernameInput = $_POST["username"]; //////////////////////////////////////////////
+        $usernameInput = $_POST["username"];
         $query = "SELECT * FROM `customers` WHERE `company_id`='$usernameInput'";
         ($result = mysqli_query($dbCon, $query)) or
             die("database error:" . mysqli_error($dbCon));
