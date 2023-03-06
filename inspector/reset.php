@@ -5,7 +5,7 @@ header("Access-Control-Allow-Methods: POST, GET");
 include "../mydbCon.php";
 use PHPMailer\PHPMailer\PHPMailer; 
 
-require_once "../_components/phpmailer/Exception.php";
+require_once "../_components/phpmailer/Exception.php"; 
 require_once "../_components/phpmailer/PHPMailer.php";
 require_once "../_components/phpmailer/SMTP.php";
 
@@ -14,13 +14,13 @@ $arr = [];
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["email"])) {
         $email = $_POST["email"];
-        $query = "SELECT * FROM `gaesUsers` WHERE `email`='$email'";
+        $query = "SELECT * FROM `inspectors` WHERE `email`='$email'";
         ($result = mysqli_query($dbCon, $query)) or
             die("database error:" . mysqli_error($dbCon));
         $userCheck = mysqli_num_rows($result);
         if ($userCheck > 0) {
             $code = rand(999999, 111111);
-            $query2 = "UPDATE `gaesUsers` SET `rst_pass_code` = '$code' WHERE `email`= '$email'";
+            $query2 = "UPDATE `inspectors` SET `rst_pass_code` = '$code' WHERE `email`= '$email'";
             ($result2 = mysqli_query($dbCon, $query2)) or
                 die("database error:" . mysqli_error($dbCon));
             if ($result2) {
@@ -63,7 +63,7 @@ If you did not forget your password, you can ignore this email.
     } elseif (isset($_POST["code"])) {
         $code = $_POST["code"];
         $email = $_POST["codeEmail"];
-        $query3 = "SELECT * FROM `gaesUsers` WHERE `email`='$email'";
+        $query3 = "SELECT * FROM `inspectors` WHERE `email`='$email'";
         ($result3 = mysqli_query($dbCon, $query3)) or
             die("database error:" . mysqli_error($dbCon));
         $data = mysqli_fetch_assoc($result3);
@@ -75,12 +75,12 @@ If you did not forget your password, you can ignore this email.
     } elseif (isset($_POST["password"])) {
         $pass = $_POST["password"];
         $email = $_POST["passEmail"];
-        $query4 = "UPDATE `gaesUsers` SET `rst_pass_code` = NULL,`password` = '$pass' WHERE `email`= '$email'";
+        $query4 = "UPDATE `inspectors` SET `rst_pass_code` = NULL,`password` = '$pass' WHERE `email`= '$email'";
         ($result4 = mysqli_query($dbCon, $query4)) or
             die("database error:" . mysqli_error($dbCon));
         if ($result4) {
             $arr["res"] = $result4;
-            $query5 = "SELECT * FROM `gaesUsers` WHERE `email`='$email'";
+            $query5 = "SELECT * FROM `inspectors` WHERE `email`='$email'";
             ($result5 = mysqli_query($dbCon, $query5)) or
                 die("database error:" . mysqli_error($dbCon));
             $user = mysqli_fetch_assoc($result5);

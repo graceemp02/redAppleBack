@@ -1,7 +1,7 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET");
-include "mydbCon.php";
+include "../mydbCon.php";
 $arr = [[]];
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET["cid"])) {

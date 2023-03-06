@@ -3,24 +3,24 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET");
 // header('Access-Control-Allow-Headers: token, Content-Type, X-Requested-With');
 include "../mydbCon.php";
-use PHPMailer\PHPMailer\PHPMailer; 
+use PHPMailer\PHPMailer\PHPMailer;
 
 require_once "../_components/phpmailer/Exception.php";
 require_once "../_components/phpmailer/PHPMailer.php";
 require_once "../_components/phpmailer/SMTP.php";
 
-$mail = new PHPMailer(true);
+$mail = new PHPMailer(true); 
 $arr = [];
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["email"])) {
         $email = $_POST["email"];
-        $query = "SELECT * FROM `gaesUsers` WHERE `email`='$email'";
+        $query = "SELECT * FROM `customers` WHERE `company_email`='$email'";
         ($result = mysqli_query($dbCon, $query)) or
             die("database error:" . mysqli_error($dbCon));
         $userCheck = mysqli_num_rows($result);
         if ($userCheck > 0) {
             $code = rand(999999, 111111);
-            $query2 = "UPDATE `gaesUsers` SET `rst_pass_code` = '$code' WHERE `email`= '$email'";
+            $query2 = "UPDATE `customers` SET `com_rst_pass_code` = '$code' WHERE `company_email`= '$email'";
             ($result2 = mysqli_query($dbCon, $query2)) or
                 die("database error:" . mysqli_error($dbCon));
             if ($result2) {
@@ -63,11 +63,11 @@ If you did not forget your password, you can ignore this email.
     } elseif (isset($_POST["code"])) {
         $code = $_POST["code"];
         $email = $_POST["codeEmail"];
-        $query3 = "SELECT * FROM `gaesUsers` WHERE `email`='$email'";
+        $query3 = "SELECT * FROM `customers` WHERE `company_email`='$email'";
         ($result3 = mysqli_query($dbCon, $query3)) or
             die("database error:" . mysqli_error($dbCon));
         $data = mysqli_fetch_assoc($result3);
-        if ($data["rst_pass_code"] == $code) {
+        if ($data["com_rst_pass_code"] == $code) {
             $arr["res"] = true;
         } else {
             $arr["res"] = false;
@@ -75,17 +75,18 @@ If you did not forget your password, you can ignore this email.
     } elseif (isset($_POST["password"])) {
         $pass = $_POST["password"];
         $email = $_POST["passEmail"];
-        $query4 = "UPDATE `gaesUsers` SET `rst_pass_code` = NULL,`password` = '$pass' WHERE `email`= '$email'";
+        $query4 = "UPDATE `customers` SET `com_rst_pass_code` = NULL,`company_pass` = '$pass' WHERE `company_email`= '$email'";
         ($result4 = mysqli_query($dbCon, $query4)) or
             die("database error:" . mysqli_error($dbCon));
         if ($result4) {
             $arr["res"] = $result4;
-            $query5 = "SELECT * FROM `gaesUsers` WHERE `email`='$email'";
+            $query5 = "SELECT * FROM `customers` WHERE `company_email`='$email'";
             ($result5 = mysqli_query($dbCon, $query5)) or
                 die("database error:" . mysqli_error($dbCon));
             $user = mysqli_fetch_assoc($result5);
-            $arr["id"] = $user["id"];
-            $arr["username"] = $user["user_name"];
+            $arr["id"] = $user["Id"];
+            $arr["username"] = $user["company_id"];
+            $arr["name"] = $user["FullName"];
         }
     }
 }
