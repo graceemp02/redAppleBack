@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $arr[$count]["id"] = $thisMachine["Id"];
             $arr[$count]["name"] = $thisMachine["name"];
             $arr[$count]["apiToken"] = $thisMachine["apiToken"];
+            $arr[$count]["insDate"] = $thisMachine["inspectionDate"];
             $count++;
         }
     } else {

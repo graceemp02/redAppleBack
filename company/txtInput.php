@@ -20,15 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
-} elseif ($_SERVER["REQUEST_METHOD"] == "GET"){
+} else {
     if (isset($_GET["id"]) && isset($_GET["name"])) {
         $id = $_GET["id"];
         $name = $_GET["name"];
         $query = "SELECT $name FROM `companyData` WHERE `client_id` = '$id'";
-        echo $query;
         $result = mysqli_query($dbCon, $query) or
         die("database error:" . mysqli_error($dbCon));
-        echo "$result";
         $data = mysqli_fetch_assoc($result);
         $arr["res"] = $data[$name];
     }
