@@ -11,11 +11,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $newPhone = $_POST["phone"];
         $newPassword = $_POST["pwd"];
         $newCompanyName = $_POST["companyName"];
+        $newCompanyEmail = $_POST["companyEmail"];
         $newCompanyId = $_POST["companyId"];
         $newCompanyPass = $_POST["companyPwd"];
 
         //Inserting Customer
-        $query = "INSERT INTO `customers` (`Id`, `FullName`, `email`, `phone`, `password`, `company_name`, `company_id`, `company_pass`, `dateCreation`) VALUES (NULL, '$newFullName', '$newEmail', '$newPhone', '$newPassword', '$newCompanyName', '$newCompanyId', '$newCompanyPass', current_timestamp())";
+        $query = "INSERT INTO `customers` (`Id`, `FullName`, `email`, `phone`, `password`, `company_name`, `company_email`, `company_id`, `company_pass`, `dateCreation`) VALUES (NULL, '$newFullName', '$newEmail', '$newPhone', '$newPassword', '$newCompanyName', '$newCompanyEmail', '$newCompanyId', '$newCompanyPass', current_timestamp())";
         ($result = mysqli_query($dbCon, $query)) or
             die("database error:" . mysqli_error($dbCon));
 

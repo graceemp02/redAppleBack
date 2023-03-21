@@ -14,6 +14,7 @@
             $arr[$count]['phone']= $thisCustomer['phone']; 
             $arr[$count]['cName']= $thisCustomer['company_name']; 
             $arr[$count]['cId']= $thisCustomer['company_id']; 
+            $arr[$count]['cEmail']= $thisCustomer['company_email']; 
             $count++;
         } 
     }

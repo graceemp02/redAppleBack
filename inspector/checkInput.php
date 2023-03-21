@@ -27,7 +27,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $query = "SELECT $name FROM `inspectorData` WHERE `customer_id`='$id'";
         ($result = mysqli_query($dbCon, $query)) or
             die("database error:" . mysqli_error($dbCon));
-        // $data = mysqli_num_rows($result);
         $data = mysqli_fetch_assoc($result);
         $arr["res"] = $data[$name];
     }
